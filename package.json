@@ -18,7 +18,8 @@
     }
   },
   "files": [
-    "dist/**/*"
+    "dist",
+    "src"
   ],
   "scripts": {
     "antlr4ts": "antlr4ts -visitor src/main/antlr/SPL.g4",
