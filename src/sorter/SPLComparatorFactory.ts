@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { PropertyWalker } from '../PropertyWalker'
-import { OrderContext, QueryContext, Sort_ruleContext } from '../antlr/SPLParser'
+import { PropertyWalker } from '../PropertyWalker.js'
+import { OrderContext, QueryContext, Sort_ruleContext } from '../antlr/SPLParser.js'
 
 export class SPLComparatorFactory {
   private propertyWalker: PropertyWalker

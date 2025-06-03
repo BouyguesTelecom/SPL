@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { SPLPredicateFilter } from '../predicate/SPLPredicateFilter'
-import { SPLLimitExtractor } from '../limiter/SPLLimitExtractor'
-import { SPLQueryToTreeConverter } from '../antlr/SPLQueryToTreeConverter'
-import { SPLComparatorFactory } from './SPLComparatorFactory'
-import { QueryContext } from '../antlr/SPLParser'
-import { Limit } from '../limiter/Limit'
+import { SPLPredicateFilter } from '../predicate/SPLPredicateFilter.js'
+import { SPLLimitExtractor } from '../limiter/SPLLimitExtractor.js'
+import { SPLQueryToTreeConverter } from '../antlr/SPLQueryToTreeConverter.js'
+import { SPLComparatorFactory } from './SPLComparatorFactory.js'
+import { QueryContext } from '../antlr/SPLParser.js'
+import { Limit } from '../limiter/Limit.js'
 
 export class SPLListFilterer {
   private splPredicateFilter: SPLPredicateFilter

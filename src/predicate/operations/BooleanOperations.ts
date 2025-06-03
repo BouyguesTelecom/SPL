@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { PredicateOperation } from './PredicateOperation'
+import { PredicateOperation } from './PredicateOperation.js'
 
 export class BooleanOperations implements PredicateOperation<boolean, boolean> {
   public leftOperandType(): string {

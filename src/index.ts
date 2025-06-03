@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { SPLQueryToTreeConverter } from './antlr/SPLQueryToTreeConverter'
-import { SPLLimitExtractor } from './limiter/SPLLimitExtractor'
-import { OperandReader } from './OperandReader'
+import { SPLQueryToTreeConverter } from './antlr/SPLQueryToTreeConverter.js'
+import { SPLLimitExtractor } from './limiter/SPLLimitExtractor.js'
+import { OperandReader } from './OperandReader.js'
 import {
   BooleanListBooleansOperations,
   BooleanOperations,
@@ -12,10 +12,10 @@ import {
   StringOperations,
   PredicateOperation,
 } from './predicate/operations/index.js'
-import { SPLPredicateFilter } from './predicate/SPLPredicateFilter'
-import { PropertyWalker } from './PropertyWalker'
-import { SPLComparatorFactory } from './sorter/SPLComparatorFactory'
-import { SPLListFilterer } from './sorter/SPLListFilterer'
+import { SPLPredicateFilter } from './predicate/SPLPredicateFilter.js'
+import { PropertyWalker } from './PropertyWalker.js'
+import { SPLComparatorFactory } from './sorter/SPLComparatorFactory.js'
+import { SPLListFilterer } from './sorter/SPLListFilterer.js'
 
 const operations: PredicateOperation<any, any>[] = [
   new StringOperations(),

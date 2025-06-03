@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { PropertyWalker } from './PropertyWalker'
-import { Function_evaluationContext, OperandContext } from './antlr/SPLParser'
-import { EvaluateFunctionOperand } from './functions/EvaluateFunctionOperand'
-import { Concat } from './functions/Concat'
-import { EvaluateDate } from './functions/EvaluateDate'
-import { Day } from './functions/Day'
-import { Month } from './functions/Month'
-import { Year } from './functions/Year'
-import { Now } from './functions/Now'
-import { Len } from './functions/Len'
-import { Intersection } from './functions/Intersection'
-import { Keys } from './functions/Keys'
-import { Reverse } from './functions/Reverse'
-import { Split } from './functions/Split'
+import { PropertyWalker } from './PropertyWalker.js'
+import { Function_evaluationContext, OperandContext } from './antlr/SPLParser.js'
+import { EvaluateFunctionOperand } from './functions/EvaluateFunctionOperand.js'
+import { Concat } from './functions/Concat.js'
+import { EvaluateDate } from './functions/EvaluateDate.js'
+import { Day } from './functions/Day.js'
+import { Month } from './functions/Month.js'
+import { Year } from './functions/Year.js'
+import { Now } from './functions/Now.js'
+import { Len } from './functions/Len.js'
+import { Intersection } from './functions/Intersection.js'
+import { Keys } from './functions/Keys.js'
+import { Reverse } from './functions/Reverse.js'
+import { Split } from './functions/Split.js'
 
 export class OperandReader {
   private propertyWalker: PropertyWalker

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { OperandReader } from '../OperandReader'
-import { QueryContext } from '../antlr/SPLParser'
-import { Limit } from './Limit'
+import { OperandReader } from '../OperandReader.js'
+import { QueryContext } from '../antlr/SPLParser.js'
+import { Limit } from './Limit.js'
 
 export class SPLLimitExtractor {
   private operandReader: OperandReader

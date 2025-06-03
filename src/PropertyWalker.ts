@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { OperandContext } from './antlr/SPLParser'
+import { OperandContext } from './antlr/SPLParser.js'
 import { RuleContext } from 'antlr4ts'
 
 export class PropertyWalker {

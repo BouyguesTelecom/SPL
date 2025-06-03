@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { SPLLexer } from './SPLLexer'
-import { SPLParser, QueryContext } from './SPLParser'
+import { SPLLexer } from './SPLLexer.js'
+import { SPLParser, QueryContext } from './SPLParser.js'
 import { CharStream, CharStreams, CommonTokenStream } from 'antlr4ts'
 
 export class SPLQueryToTreeConverter {
