@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { EvaluateFunctionOperand } from './EvaluateFunctionOperand'
 
 export class Keys implements EvaluateFunctionOperand {

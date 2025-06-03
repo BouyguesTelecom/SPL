@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { test, expect } from 'vitest'
 import { OperandReader } from '../main/OperandReader'
 import { PropertyWalker } from '../main/PropertyWalker'

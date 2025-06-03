@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { PredicateContext, Predicate_memberContext, QueryContext } from '../antlr/SPLParser'
 import { OperandReader } from '../OperandReader'
 import { PredicateOperation } from './operations'

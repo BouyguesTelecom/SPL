@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { defaultFieldResolver, GraphQLSchema } from 'graphql'
 import { MeshTransform } from '@graphql-mesh/types'
 import { MapperKind, mapSchema } from '@graphql-tools/utils'
@@ -60,7 +62,7 @@ export const splDirectiveTypeDef: string = /* GraphQL */ `
     """
     SPL query
 
-    > [Usage examples](https://gitlab.int.nbyt.fr/graphql/spl/-/blob/master/README.md#examples)
+    > [Usage examples](https://github.com/BouyguesTelecom/SPL#examples)
     """
     query: String
   ) on FIELD

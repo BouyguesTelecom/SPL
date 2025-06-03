@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 export abstract class PredicateOperation<L, R> {
   abstract leftOperandType(): string
   abstract rightOperandType(): string

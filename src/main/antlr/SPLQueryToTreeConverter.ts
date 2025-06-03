@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { SPLLexer } from './SPLLexer'
 import { SPLParser, QueryContext } from './SPLParser'
 import { CharStream, CharStreams, CommonTokenStream } from 'antlr4ts'

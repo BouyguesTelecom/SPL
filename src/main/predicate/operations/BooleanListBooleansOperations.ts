@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { PredicateOperation } from './PredicateOperation'
 
 export class BooleanListBooleansOperations implements PredicateOperation<boolean, Array<any>> {

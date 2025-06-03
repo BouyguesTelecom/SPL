@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { PropertyWalker } from './PropertyWalker'
 import { Function_evaluationContext, OperandContext } from './antlr/SPLParser'
 import { EvaluateFunctionOperand } from './functions/EvaluateFunctionOperand'

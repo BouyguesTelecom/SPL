@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { BooleanListBooleansOperations } from './BooleanListBooleansOperations'
 import { BooleanOperations } from './BooleanOperations'
 import { DateOperations } from './DateOperations'

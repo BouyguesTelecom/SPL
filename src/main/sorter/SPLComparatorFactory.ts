@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { PropertyWalker } from '../PropertyWalker'
 import { OrderContext, QueryContext, Sort_ruleContext } from '../antlr/SPLParser'
 

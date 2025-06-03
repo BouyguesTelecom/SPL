@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { OperandContext } from './antlr/SPLParser'
 import { RuleContext } from 'antlr4ts'
 

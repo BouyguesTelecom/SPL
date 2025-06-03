@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { SPLPredicateFilter } from '../predicate/SPLPredicateFilter'
 import { SPLLimitExtractor } from '../limiter/SPLLimitExtractor'
 import { SPLQueryToTreeConverter } from '../antlr/SPLQueryToTreeConverter'
