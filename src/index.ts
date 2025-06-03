@@ -1,69 +1,38 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { defaultFieldResolver, GraphQLSchema } from 'graphql'
-import { MeshTransform } from '@graphql-mesh/types'
-import { MapperKind, mapSchema } from '@graphql-tools/utils'
-import { splListFilterer } from './main'
+import { SPLQueryToTreeConverter } from './antlr/SPLQueryToTreeConverter'
+import { SPLLimitExtractor } from './limiter/SPLLimitExtractor'
+import { OperandReader } from './OperandReader'
+import {
+  BooleanListBooleansOperations,
+  BooleanOperations,
+  DateOperations,
+  NumberOperations,
+  StringListStringOperations,
+  StringOperations,
+  PredicateOperation,
+} from './predicate/operations/index.js'
+import { SPLPredicateFilter } from './predicate/SPLPredicateFilter'
+import { PropertyWalker } from './PropertyWalker'
+import { SPLComparatorFactory } from './sorter/SPLComparatorFactory'
+import { SPLListFilterer } from './sorter/SPLListFilterer'
 
-export default class SplDirectiveTransform implements MeshTransform {
-  noWrap = true
+const operations: PredicateOperation<any, any>[] = [
+  new StringOperations(),
+  new StringListStringOperations(),
+  new NumberOperations(),
+  new BooleanOperations(),
+  new BooleanListBooleansOperations(),
+  new DateOperations(),
+]
 
-  transformSchema(schema: GraphQLSchema) {
-    return mapSchema(schema, {
-      [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
-        const originalResolver = fieldConfig.resolve ?? defaultFieldResolver
+export { SPLListFilterer }
 
-        const resolver = async (next: any , _source: any, _args: any, context: any, info: any) => {
-          const { directives } = info.fieldNodes[0]
-          const splDirective = directives.find((directive: { name: { value: string } }) => directive.name.value === 'SPL')
-          const result = await next(context)
+export const splListFilterer: SPLListFilterer = new SPLListFilterer(
+  new SPLPredicateFilter(new OperandReader(new PropertyWalker()), operations),
+  new SPLLimitExtractor(new OperandReader(new PropertyWalker())),
+  new SPLComparatorFactory(new PropertyWalker()),
+  new SPLQueryToTreeConverter(),
+)
 
-          if (splDirective) {
-            const { value } = splDirective.arguments[0]
-
-            const data = splListFilterer.filter(
-              value.value,
-              splListFilterer.formatInput(result),
-              splListFilterer.formatVariables(context.params.variables || {})
-            )
-            return splListFilterer.formatOutput(data)
-          }
-
-          return result
-        }
-
-        fieldConfig.resolve = (source, originalArgs, context, info) => {
-          return resolver(
-            (context: unknown) =>
-              new Promise((resolve, reject) => {
-                const result = originalResolver(source, originalArgs, context, info)
-                if (result instanceof Error) {
-                  reject(result)
-                }
-                resolve(result)
-              }),
-            source,
-            originalArgs,
-            context,
-            info
-          )
-        }
-        return fieldConfig
-      }
-    })
-  }
-}
-
-export const splDirectiveTypeDef: string = /* GraphQL */ `
-  """
-  This is a very small, lightweight, straightforward and non-evaluated expression language to sort, filter and paginate arrays of maps.
-  """
-  directive @SPL(
-    """
-    SPL query
-
-    > [Usage examples](https://github.com/BouyguesTelecom/SPL#examples)
-    """
-    query: String
-  ) on FIELD
-`
+export default splListFilterer

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { test, expect } from 'vitest'
-import { OperandReader } from '../main/OperandReader'
-import { PropertyWalker } from '../main/PropertyWalker'
-import { SPLQueryToTreeConverter } from '../main/antlr/SPLQueryToTreeConverter'
-import { SPLLimitExtractor } from '../main/limiter/SPLLimitExtractor'
-import { SPLPredicateFilter } from '../main/predicate/SPLPredicateFilter'
-import { SPLComparatorFactory } from '../main/sorter/SPLComparatorFactory'
-import { SPLListFilterer } from '../main/sorter/SPLListFilterer'
+import { OperandReader } from '../OperandReader'
+import { PropertyWalker } from '../PropertyWalker'
+import { SPLQueryToTreeConverter } from '../antlr/SPLQueryToTreeConverter'
+import { SPLLimitExtractor } from '../limiter/SPLLimitExtractor'
+import { SPLPredicateFilter } from '../predicate/SPLPredicateFilter'
+import { SPLComparatorFactory } from '../sorter/SPLComparatorFactory'
+import { SPLListFilterer } from '../sorter/SPLListFilterer'
 import {
   StringOperations,
   StringListStringOperations,
@@ -16,7 +16,7 @@ import {
   BooleanOperations,
   BooleanListBooleansOperations,
   PredicateOperation,
-} from '../main/predicate/operations'
+} from '../predicate/operations'
 
 type ArrayMapDataset = Map<string, Object>[]
 

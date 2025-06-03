@@ -8,7 +8,7 @@ SPL is a very small, lightweight, straightforward and non-evaluated expression l
 
 ## Grammar
 
-See [SPL.g4 file](./src/main/antlr/SPL.g4)
+See [SPL.g4 file](./src/antlr/SPL.g4)
 
 ## Examples
 

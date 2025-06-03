@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { test, expect } from 'vitest'
-import { OperandReader } from '../main/OperandReader'
-import { PropertyWalker } from '../main/PropertyWalker'
-import { SPLPredicateFilter } from '../main/predicate/SPLPredicateFilter'
-import { SPLQueryToTreeConverter } from '../main/antlr/SPLQueryToTreeConverter'
-import { QueryContext } from '../main/antlr/SPLParser'
+import { OperandReader } from '../OperandReader'
+import { PropertyWalker } from '../PropertyWalker'
+import { SPLPredicateFilter } from '../predicate/SPLPredicateFilter'
+import { SPLQueryToTreeConverter } from '../antlr/SPLQueryToTreeConverter'
+import { QueryContext } from '../antlr/SPLParser'
 import {
   StringOperations,
   StringListStringOperations,
@@ -13,7 +13,7 @@ import {
   NumberOperations,
   BooleanOperations,
   BooleanListBooleansOperations,
-} from '../main/predicate/operations'
+} from '../predicate/operations'
 
 type MapDataset = Map<string, Object>
 
