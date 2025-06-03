@@ -1,5 +1,7 @@
 # Simple Predicate Langage (SPL)
 
+![NPM Version](https://img.shields.io/npm/v/@bouygues-telecom/spl?style=flat-square)
+
 ## Introduction
 
 SPL is a very small, lightweight, straightforward and non-evaluated expression language to sort, filter and paginate arrays of maps.
