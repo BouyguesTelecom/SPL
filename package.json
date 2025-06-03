@@ -22,11 +22,10 @@
   ],
   "scripts": {
     "antlr4ts": "antlr4ts -visitor src/main/antlr/SPL.g4",
-    "prebuild": "npm run antlr4ts",
+    "prepare": "npm run antlr4ts",
     "build:cjs": "tsc --project tsconfig-cjs.json",
     "build:esm": "tsc --project tsconfig-esm.json",
     "build": "rm -rf dist && npm run build:esm && npm run build:cjs",
-    "pretest": "npm run antlr4ts",
     "test": "vitest"
   },
   "dependencies": {
