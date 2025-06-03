@@ -28,7 +28,7 @@
     "build:esm": "tsc --project tsconfig-esm.json",
     "build": "rm -rf dist && npm run build:esm && npm run build:cjs",
     "test": "vitest",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "antlr4ts": "^0.5.0-alpha.4"
