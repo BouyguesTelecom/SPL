@@ -31,6 +31,6 @@ jobs:
         run: npm version ${GITHUB_REF#refs/tags/} --no-git-tag-version
       - name: Install dependencies
         run: npm i
-      - run: npm publish --access public
+      - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPMJS_TOKEN}}
