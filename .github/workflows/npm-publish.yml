@@ -21,6 +21,11 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Required by `npm publish --provenance`: it is what grants access to the OIDC token npm
+      # signs the attestation with. It is never granted by default and has to be asked for.
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,6 +36,7 @@ jobs:
         run: npm version ${GITHUB_REF#refs/tags/} --no-git-tag-version
       - name: Install dependencies
         run: npm i
-      - run: npm publish --access public
+      # `--provenance` attaches a signed attestation tying the published tarball to this commit and workflow
+      - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPMJS_TOKEN}}
