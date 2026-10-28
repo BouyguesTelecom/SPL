@@ -70,6 +70,13 @@ export class SPLPredicateFilter {
   ): boolean {
     const operator: string = predicateMemberContext.comparator().text
 
+    // ANTLR recovers from syntax errors and still produces a tree, so a malformed query such as
+    // `INVALID QUERY` reaches us as a comparison with no operator at all. That is a broken query,
+    // not a predicate that evaluates to false: report it.
+    if (!operator) {
+      throw new Error(`Malformed predicate: no comparator in "${predicateMemberContext.text}".`)
+    }
+
     let leftValue: Object = this.operandReader.readOperand(
       predicateMemberContext.operand(0),
       input,
@@ -81,17 +88,15 @@ export class SPLPredicateFilter {
       variables,
     )!
 
+    // An operand resolving to null simply makes the predicate false when the operator has no null
+    // semantics (only '=', 'IS' and '!=' have). This happens routinely on optional sub-nodes, e.g.
+    // `'210' IN MAP(invoices.items, status)` where `invoices` is null for some elements: such an
+    // element must be filtered out, not blow up the whole list.
     if (leftValue === null) {
-      if (!this.nullOperations.get(operator)) {
-        throw new Error(`Operator ${operator} not found.`)
-      }
       return this.nullOperations.get(operator)?.(rightValue) || false
     }
 
     if (rightValue === null) {
-      if (!this.nullOperations.get(operator)) {
-        throw new Error(`Operator ${operator} not found.`)
-      }
       return this.nullOperations.get(operator)?.(leftValue) || false
     }
 
