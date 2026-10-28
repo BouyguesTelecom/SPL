@@ -1,0 +1,35 @@
+# Runs the test suite on every pull request and on every push to main.
+#
+# Kept separate from npm-publish.yml on purpose: that workflow only reacts to a release, and
+# mixing the two would mean guarding the publish job against pull request events.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A new push to a pull request makes the previous run pointless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # `npm i` also runs `prepare`, which regenerates the ANTLR parser from SPL.g4 — the sources
+      # it produces are gitignored, so nothing works without this step. It needs a JRE, which the
+      # runner image already provides.
+      - run: npm i
+      - run: npm test
+      # Type errors would otherwise only surface at publish time, through `prepublishOnly`.
+      - run: npm run build
