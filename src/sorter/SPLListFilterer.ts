@@ -42,55 +42,69 @@ export class SPLListFilterer {
   }
 
   public formatInput(input: any): Map<string, Object>[] {
-    const parsedJsonInput = JSON.parse(JSON.stringify(input))
-    const inputMap: Map<string, Object>[] = []
-
-    parsedJsonInput.forEach((item: Map<string, Object>) => {
-      const newItem: Map<string, Object> = new Map()
-
-      Object.entries(item).forEach(([key, value]) => {
-        if (value && typeof value === 'object') {
-          newItem.set(key, new Map(Object.entries(value)))
-        } else {
-          newItem.set(key, value)
-        }
-      })
-
-      inputMap.push(newItem)
-    })
-    return inputMap
+    return (input as any[]).map((item) => SPLListFilterer.toMaps(item) as Map<string, Object>)
   }
 
   public formatVariables(variables: any): Map<string, Object> {
-    const newItem: Map<string, Object> = new Map()
-    if (!Array.isArray(variables)) {
-      Object.entries(variables).forEach(([key, value]) => {
-        if (value && typeof value === 'object') {
-          newItem.set(key, new Map(Object.entries(value)))
-        } else {
-          newItem.set(key, value as Object)
-        }
-      })
+    if (Array.isArray(variables)) {
+      return new Map()
     }
-    return newItem
+    return SPLListFilterer.toMaps(variables) as Map<string, Object>
   }
 
   public formatOutput(output: Map<string, Object>[]): any[] {
-    const reversedInput: any[] = []
+    return output.map((item) => SPLListFilterer.fromMaps(item))
+  }
 
-    output.forEach((item: Map<string, Object>) => {
-      const newItem: any = {}
+  /**
+   * Recursively turns plain objects into `Map`s, walking through arrays as well.
+   *
+   * `PropertyWalker` only steps into a `Map`, so a path such as `MAP(invoices.items, status)` can
+   * only be resolved if *every* level — including the objects nested inside arrays — is a `Map`.
+   * Scalars are returned as-is. Keys holding `undefined` are skipped, matching the behaviour of the
+   * previous `JSON.parse(JSON.stringify(...))` round-trip.
+   */
+  private static toMaps(value: any): any {
+    if (Array.isArray(value)) {
+      return value.map((item) => SPLListFilterer.toMaps(item))
+    }
 
-      item.forEach((value, key) => {
-        if (value instanceof Map) {
-          newItem[key] = Object.fromEntries(value)
-        } else {
-          newItem[key] = value
+    if (value instanceof Map) {
+      const converted: Map<string, Object> = new Map()
+      value.forEach((item, key) => converted.set(key, SPLListFilterer.toMaps(item)))
+      return converted
+    }
+
+    if (value !== null && typeof value === 'object' && !(value instanceof Date)) {
+      const converted: Map<string, Object> = new Map()
+      Object.entries(value).forEach(([key, item]) => {
+        if (item !== undefined) {
+          converted.set(key, SPLListFilterer.toMaps(item))
         }
       })
+      return converted
+    }
 
-      reversedInput.push(newItem)
-    })
-    return reversedInput
+    return value
+  }
+
+  /**
+   * Symmetric of {@link toMaps}: recursively turns `Map`s back into plain objects, walking through
+   * arrays so that no `Map` leaks into the output.
+   */
+  private static fromMaps(value: any): any {
+    if (Array.isArray(value)) {
+      return value.map((item) => SPLListFilterer.fromMaps(item))
+    }
+
+    if (value instanceof Map) {
+      const converted: any = {}
+      value.forEach((item, key) => {
+        converted[key] = SPLListFilterer.fromMaps(item)
+      })
+      return converted
+    }
+
+    return value
   }
 }

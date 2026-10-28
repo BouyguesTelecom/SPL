@@ -12,13 +12,15 @@ export class DateOperations implements PredicateOperation<Date, Date> {
   }
 
   public evaluations(): Map<string, (a: Date, b: Date) => boolean> {
+    // Dates are compared chronologically, by value. Comparing their textual representation would
+    // order them by weekday name, and comparing the objects themselves by reference.
     return new Map([
-      ['=', (a, b) => a === b],
-      ['!=', (a, b) => a !== b],
-      ['<', (a, b) => a.toDateString().localeCompare(b.toDateString()) < 0],
-      ['>', (a, b) => a.toDateString().localeCompare(b.toDateString()) > 0],
-      ['<=', (a, b) => a.toDateString().localeCompare(b.toDateString()) <= 0],
-      ['>=', (a, b) => a.toDateString().localeCompare(b.toDateString()) >= 0],
+      ['=', (a, b) => a.getTime() === b.getTime()],
+      ['!=', (a, b) => a.getTime() !== b.getTime()],
+      ['<', (a, b) => a.getTime() < b.getTime()],
+      ['>', (a, b) => a.getTime() > b.getTime()],
+      ['<=', (a, b) => a.getTime() <= b.getTime()],
+      ['>=', (a, b) => a.getTime() >= b.getTime()],
     ])
   }
 

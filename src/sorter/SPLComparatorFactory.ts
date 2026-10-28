@@ -29,24 +29,10 @@ export class SPLComparatorFactory {
       const order = this.calculateOrder(prioritySortRule.order()) === 'ASC' ? 1 : -1
 
       const operand = prioritySortRule.operand()
-      const item1 = this.propertyWalker.walkToProperty(o1, operand)!
-      const item2 = this.propertyWalker.walkToProperty(o2, operand)!
+      const item1 = this.propertyWalker.walkToProperty(o1, operand)
+      const item2 = this.propertyWalker.walkToProperty(o2, operand)
 
-      let comparisonResult: number = item1.toString().localeCompare(item2.toString()) * order
-
-      if (item1.toString().split('-').length === 3) {
-        const item1Date = new Date(item1.toString()).toDateString()
-        const item2Date = new Date(item2.toString()).toDateString()
-
-        item1Date.localeCompare(item2Date) < 0
-          ? (comparisonResult = -1 * order)
-          : (comparisonResult = 1 * order)
-      } else if (!isNaN(parseInt(item1.toString()))) {
-        const item1Number: number = parseInt(item1.toString())
-        const item2Number: number = parseInt(item2.toString())
-
-        item1Number < item2Number ? (comparisonResult = -1 * order) : (comparisonResult = 1 * order)
-      }
+      const comparisonResult = SPLComparatorFactory.compare(item1, item2) * order
 
       if (comparisonResult === 0) {
         return this.sortBy(o1, o2, sortRules.slice(1, sortRules.length))
@@ -56,6 +42,64 @@ export class SPLComparatorFactory {
     }
 
     return 0
+  }
+
+  /**
+   * Natural ordering of two values, mirroring `Comparable.compareTo`.
+   *
+   * Returns `0` whenever the two values are equivalent — or when one of them is missing — so that
+   * the next sort rule gets a chance to break the tie.
+   */
+  private static compare(item1: object | null, item2: object | null): number {
+    if (item1 === null || item1 === undefined || item2 === null || item2 === undefined) {
+      return 0
+    }
+
+    if (typeof item1 === 'number' && typeof item2 === 'number') {
+      return Math.sign(item1 - item2)
+    }
+
+    if (typeof item1 === 'boolean' && typeof item2 === 'boolean') {
+      return Math.sign(Number(item1) - Number(item2))
+    }
+
+    const text1 = item1.toString()
+    const text2 = item2.toString()
+
+    // Dates must be ordered chronologically, not by their textual representation: 'DD-MM-YYYY'
+    // sorts wrong lexicographically, and so does any locale-formatted rendering of a date.
+    const time1 = SPLComparatorFactory.toTimestamp(text1)
+    const time2 = SPLComparatorFactory.toTimestamp(text2)
+
+    if (time1 !== null && time2 !== null) {
+      return Math.sign(time1 - time2)
+    }
+
+    if (text1 === text2) {
+      return 0
+    }
+
+    return text1 < text2 ? -1 : 1
+  }
+
+  /**
+   * Parses the date formats SPL accepts — ISO (`YYYY-MM-DD`, optionally followed by a time) and
+   * `DD-MM-YYYY` — into a timestamp. Returns `null` for anything that is not a date, so the caller
+   * falls back to a plain textual comparison.
+   */
+  private static toTimestamp(value: string): number | null {
+    if (/^\d{4}-\d{2}-\d{2}([T ].*)?$/.test(value)) {
+      const parsed = Date.parse(value)
+      return isNaN(parsed) ? null : parsed
+    }
+
+    const dayFirst = /^(\d{2})-(\d{2})-(\d{4})$/.exec(value)
+    if (dayFirst) {
+      const [, day, month, year] = dayFirst
+      return Date.UTC(Number(year), Number(month) - 1, Number(day))
+    }
+
+    return null
   }
 
   private calculateOrder(order?: OrderContext): string {
